@@ -1,2 +1,2 @@
 # utils
-Utils is a collection of common  Python functions and classes
+Utils is a collection of common Python functions and classes
