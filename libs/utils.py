@@ -7,9 +7,13 @@ import os, sys
 platform = sys.platform
 
 def check_files_exists(files):
+	'Check files exists'
+
 	pass
 
 def get_file_content(filename):
+	'Get file content'
+
 	if check_files_exists(filename):
 		with open(filename) as file:
 			content = file
@@ -18,7 +22,7 @@ def get_file_content(filename):
 		return False
 
 def which(program):
-	'get program command path'
+	'Get program command path'
 
 	def is_exe(path):
 		return os.path.isfile(path) and os.access(path, os.X_OK)
@@ -35,3 +39,9 @@ def which(program):
 				return exe_file
 
 	return None
+
+def is_virtual():
+	'Check if the current environment is a virtual machine'
+
+	return (hasattr(sys, 'real_prefix') or
+            (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix))
