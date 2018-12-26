@@ -1,11 +1,7 @@
 # -*- coding: UTF-8 -*-
 
-# from .__version__ import __version__ as VERSION
-
 import os, sys
 import yaml
-
-platform = sys.platform
 
 def which(program):
 	'Get program command path'
