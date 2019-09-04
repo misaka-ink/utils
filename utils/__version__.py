@@ -2,6 +2,6 @@
 
 __title__ = 'utils'
 __description__ = 'Utils is a collection of common Python functions and classes'
-__version__ = '1.0.1'
+__version__ = '1.1.0'
 __author__ = 'Xinyi'
 __license__ = 'MIT License'

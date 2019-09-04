@@ -1,15 +1,14 @@
 # -*- coding: UTF-8 -*-
 
-import os, sys
-import yaml
+import os, sys, inspect
+
 
 def which(program):
-	'Get program command path'
-
-	def is_exe(path):
-		return os.path.isfile(path) and os.access(path, os.X_OK)
-
+	"""Check program command-line path"""
 	filepath, filename = os.path.split(program)
+
+	def is_exe(file):
+		return os.path.isfile(file) and os.access(path, os.X_OK)
 
 	if filepath:
 		if is_exe(program):
@@ -22,90 +21,85 @@ def which(program):
 
 	return None
 
+
 def is_virtual():
-	'Check if the current environment is a virtual machine'
+	"""Check current environment is a virtual environment"""
+	return hasattr(sys, "real_prefix") or (hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix)
 
-	return (hasattr(sys, 'real_prefix') or
-            (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix))
 
-def parents(parents_name, current_path = None):
-	'Get parents name path'
+def parents(name, path=None):
+	"""Get parents name path"""
+	parent_name = os.path.dirname(path or os.path.abspath(sys.modules["__main__"].__file__))
 
-	parent_name = os.path.dirname(current_path or os.path.abspath(__file__))
-	dict_name = parent_name.split('/')[-1]
-	if parents_name == dict_name:
-		return parent_name
-	elif dict_name == '/':
-		return None
-	else:
-		return parents(parents_name, parent_name)
+	paths = parent_name.split(os.sep)
+	targetPaths = []
+	for path in paths:
+		targetPaths.append(path)
+		if path == name:
+			break
+	return os.sep.join(targetPaths)
+
 
 def root_path(root_name):
-	'''
-	Append root path
-	:param root_name: append target folder name
-	:return:
-	'''
+	"""Append root path"""
+	path = parents(root_name)
+	if path not in sys.path:
+		sys.path.append(path)
 
-	rootpath = parents(root_name)
-	sys.path.append(rootpath)
 
-def check_files_exists(files):
-	'Check files exists'
+def abs_path_wrapper(file, deep=1):
+	frame = inspect.stack()[deep]
+	caller_dir = os.path.dirname(frame.filename)
+	a = os.path.normpath(os.path.join(caller_dir, file))
+	return a
 
-	pass
 
-def get_file_content(filename):
-	'Get file content'
+def existed(files, deep=2):
+	"""Files existed"""
+	is_existed = True
+	if type(files) != list:
+		files = [files]
+	for file in files:
+		path = abs_path_wrapper(file, deep)
+		is_existed = is_existed and os.path.exists(path)
+	return is_existed
 
-	if check_files_exists(filename):
-		with open(filename) as file:
-			content = file
-			return content
+
+def read(filename):
+	"""Get file content"""
+	if existed(filename, 3):
+		try:
+			with open(abs_path_wrapper(filename, 2), 'rt') as file:
+				return file.read()
+		except OSError as err_msg:
+			return err_msg
 	else:
 		return False
 
-class classproperty(object):
-	'Class property'
 
-	'''
-	Usage: 
-	
+def write(filename, content):
+	"""Write file content"""
+	try:
+		with open(abs_path_wrapper(filename, 2), 'wt') as file:
+			file.write(content)
+			file.close()
+	except OSError as err_msg:
+		return err_msg
+
+
+class Property(object):
+	"""
+	Class property
+	--------------------------
+	Usage:
+
 	class Status(enum.Enum):
 		WAITING = 0,
 		RUNNING = 1
-	'''
+	"""
 
 	def __init__(self, getter):
-		self.getter= getter
+		self.getter = getter
+
 	def __get__(self, instance, owner):
 		return self.getter(owner)
-
-def write_yaml(file, data):
-	'''
-	Write yaml file
-	:param file: (path) filename
-	:param data: write data
-	:return: None is ok or error message
-	'''
-	try:
-		with open(file, 'wb') as yaml_file:
-			yaml.dump(data, yaml_file, default_flow_style=False)
-			yaml_file.close()
-			return None
-	except OSError as err_msg:
-		print err_msg
-
-def read_yaml(file):
-	'''
-	Read yaml file
-	:param file: (path) filename
-	:return: file data or error message
-	'''
-	try:
-		with open(file) as yaml_file:
-			data = yaml.load(yaml_file)
-			yaml_file.close()
-			return data
-	except OSError as err_msg:
-		return err_msg
