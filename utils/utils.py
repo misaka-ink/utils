@@ -40,8 +40,6 @@ def parents(name, path=None):
 	'''Get parents name path'''
 	parent_name = os.path.dirname(path or os.path.abspath(sys.modules['__main__'].__file__))
 
-	print parent_name
-
 	paths = parent_name.split(os.sep)
 	targetPaths = []
 	for path in paths:

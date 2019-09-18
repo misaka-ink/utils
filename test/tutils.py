@@ -15,7 +15,6 @@ class UtilsTest(unittest.TestCase):
 		self.assertTrue(utils.is_virtual())
 
 	def test_parents(self):
-		print utils.parents('utils', __file__)
 		self.assertEqual(utils.parents('utils', __file__), os.getcwd())
 
 	def test_root_path(self):
