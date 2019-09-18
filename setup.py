@@ -13,7 +13,7 @@ setup(
 	long_description=long_description,
 	long_description_content_type="text/markdown",
 	url="https://github.com/misaka-ink/utils",
-	author="Smiling Xinyi",
+	author="xinyi",
 	author_email="smilingxinyi@gmail.com",
 	license="MIT",
 	keywords="utils",
