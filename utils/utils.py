@@ -3,12 +3,12 @@
 import os, sys, inspect, platform, subprocess
 
 def is_windows():
-	'''is unix os'''
+	'''Is unix os'''
 	return 'Windows' in platform.system()
 
 
 def is_unix():
-	'''is unix os'''
+	'''Is unix os'''
 	return 'Linux' in platform.system() or 'Darwin' in platform.system()
 
 
@@ -38,8 +38,7 @@ def which(program):
 
 def parents(name, path=None):
 	'''Get parents name path'''
-	parent_name = os.path.dirname(path or os.path.abspath(sys.modules['__main__'].__file__))
-
+	parent_name = os.path.dirname(os.path.abspath(path or os.path.abspath(sys.modules['__main__'].__file__)))
 	paths = parent_name.split(os.sep)
 	targetPaths = []
 	for path in paths:
@@ -58,7 +57,7 @@ def root_path(root_name):
 
 def abs_path_wrapper(file, deep=1):
 	frame = inspect.stack()[deep]
-	caller_dir = os.path.dirname(frame.filename)
+	caller_dir = os.path.dirname(frame[1])
 	return os.path.normpath(os.path.join(caller_dir, file))
 
 
@@ -96,12 +95,12 @@ def write(filename, content):
 
 
 def exec_cmd(cmd):
-	'''execute command'''
+	'''Execute command'''
 	return not os.system(cmd)
 
 
 def exec_sub_cmd(cmd):
-	'''execute command in subprocess'''
+	'''Execute command in subprocess'''
 	return subprocess.Popen(cmd, shell=True).wait()
 
 

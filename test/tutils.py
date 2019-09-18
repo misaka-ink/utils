@@ -34,6 +34,5 @@ class UtilsTest(unittest.TestCase):
 		self.assertEqual(utils.read(filename), content)
 		os.remove(test_filename)
 
-
 if __name__ == '__main__':
 	unittest.main()
