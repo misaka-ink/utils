@@ -5,6 +5,7 @@ Utils
 ---------------------------
 Utils is a collection of common Python functions and classes
 """
-from utils import *
-name = 'utils'
 
+from utils import *
+
+name = 'utils'

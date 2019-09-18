@@ -7,16 +7,15 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils import utils
 
-
 class UtilsTest(unittest.TestCase):
 	def test_which(self):
 		self.assertEqual(utils.which('sh'), '/bin/sh')
 
 	def test_is_virtual(self):
-		# should be true
 		self.assertTrue(utils.is_virtual())
 
 	def test_parents(self):
+		print utils.parents('utils', __file__)
 		self.assertEqual(utils.parents('utils', __file__), os.getcwd())
 
 	def test_root_path(self):
